@@ -10,7 +10,7 @@ def get_score_element(points):
     font = pygame.font.Font(FONT_STYLE, 17)
     text = font.render("Point: {}".format(points), True, black_color)
     text_rect = text.get_rect()
-    text_rect.center = (1010, 20)
+    text_rect.center = (100, 20)
     return text, text_rect
 
 

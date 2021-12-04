@@ -4,6 +4,7 @@ from dino_runner.utils.constants import HEART
 
 
 class Life(Sprite):
+
     def __init__(self, pos_x):
         self.image = HEART
         self.pos_x = pos_x

@@ -1,17 +1,22 @@
 from dino_runner.components.life import Life
+from dino_runner.utils.constants import SCREEN_WIDTH
+
 
 class LifeManager:
+
     def __init__(self):
         self.life_list = []
 
     def new_lifes(self):
         self.life_list = []
         total_lifes = 3 #Cantidad de vidas
-        pos_x = 30
+        pos_x = 1010
 
         for life in range(0, total_lifes):
-            self.life_list.append(Life(pos_x))
-            pos_x += 30 #Distancia entre vidas
+            life = Life(pos_x)
+            self.life_list.append(life)
+            pos_x -= life.image.get_width()
+            # Distancia entre vidas
 
     def draw(self, screen):
         for life in self.life_list:

@@ -3,9 +3,11 @@ import pygame
 from dino_runner.components.Cloud import Cloud
 from dino_runner.components.Obstacles.Obstacle_manager import ObstacleManager
 from dino_runner.components.life_manager import LifeManager
+from dino_runner.components.power_ups import hammer
+from dino_runner.components.power_ups.hammer import Hammer
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 from dino_runner.components.text_utils import get_score_element, get_centered_message
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DINO_START
 from dino_runner.components.dinosaurio import Dinosaur
 
 
@@ -22,6 +24,7 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.cloud = Cloud()
+        self.hammer = Hammer()
         self.obstacle_manager = ObstacleManager()
         self.powerup_manager = PowerUpManager()
         self.life_manager = LifeManager()
@@ -41,7 +44,7 @@ class Game:
 
     def create_components(self):
         self.obstacle_manager.reset_obstacles()
-        self.powerup_manager.reset_power_ups(self.points)
+        self.powerup_manager.reset_power_ups(self.points,self.player)
         self.life_manager.new_lifes()
 
     def execute(self):
@@ -55,10 +58,11 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
 
+
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
-        self.cloud.update(self.game_speed)
+        self.cloud.update(self.game_speed-4)
         self.obstacle_manager.update(self)
         self.powerup_manager.update(self.points, self.game_speed, self.player)
 
@@ -77,7 +81,6 @@ class Game:
         pygame.display.flip()
 
     def score(self):
-
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
@@ -101,8 +104,13 @@ class Game:
         # print('muertes {}'.format(self.death_account))
         text, text_rect = get_centered_message('Press any key to star')
         self.screen.blit(text, text_rect)
-        death, death_rect = get_centered_message('muertes {}'.format(self.death_account), half_sw, half_sh+50)
-        self.screen.blit(death, death_rect)
+        self.screen.blit(DINO_START, (500, 150))
+
+        if not death_account == 0:
+            death, death_rect = get_centered_message('Your score : {}'.format(self.points), half_sw, half_sh + 100)
+            self.screen.blit(death, death_rect)
+            death, death_rect = get_centered_message('Death : {}'.format(self.death_account), half_sw, half_sh + 50)
+            self.screen.blit(death, death_rect)
 
     def handle_key_events_on_menu(self):
         for event in pygame.event.get():

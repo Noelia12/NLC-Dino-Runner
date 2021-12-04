@@ -2,6 +2,7 @@ import pygame, random
 
 from dino_runner.components.Obstacles.Pajaro import Pajaro
 from dino_runner.components.Obstacles.cactus import Cactus
+from dino_runner.components.power_ups import hammer
 from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD
 
 
@@ -24,10 +25,11 @@ class ObstacleManager:
             obstacle.update(game.game_speed, self.obstacles)
             # para acceder a la instancia de algo y dice self.algo,
             # reemplazamos el self por el nombre del objeto
+            user_input = pygame.key.get_pressed()
             if game.player.dino_rect.colliderect(obstacle.obstacle_rect):
                 if not game.player.shield:
                     if game.life_manager.life_counter() == 1:
-                        pygame.time.delay(500)
+                        pygame.time.delay(1000)
                         game.playing = False
                         game.death_account += 1
                         break
